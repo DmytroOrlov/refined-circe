@@ -12,6 +12,9 @@ lazy val `refined-circe` = (project in file("."))
     addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3"),
     addCompilerPlugin(("org.scalameta" % "paradise" % "3.0.0-M11").cross(CrossVersion.full)),
     libraryDependencies ++= Seq(
+      "eu.timepit" %% "refined" % "0.9.8",
+      "io.circe" %% "circe-refined" % "0.11.1",
+
       "dev.zio" %% "zio" % zioVersion,
       "dev.zio" %% "zio-interop-cats" % "1.3.1.0-RC3",
       "io.monix" %% "monix" % "3.0.0-RC3",
