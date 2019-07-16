@@ -1,6 +1,7 @@
 import Dependencies._
 
-lazy val zioVersion = "1.0.0-RC10-1"
+val zioVersion = "1.0.0-RC10-1"
+val circeVersion = "0.11.1"
 
 lazy val `refined-circe` = (project in file("."))
   .settings(
@@ -13,7 +14,10 @@ lazy val `refined-circe` = (project in file("."))
     addCompilerPlugin(("org.scalameta" % "paradise" % "3.0.0-M11").cross(CrossVersion.full)),
     libraryDependencies ++= Seq(
       "eu.timepit" %% "refined" % "0.9.8",
-      "io.circe" %% "circe-refined" % "0.11.1",
+      "io.circe" %% "circe-core" % circeVersion,
+      "io.circe" %% "circe-generic" % circeVersion,
+      "io.circe" %% "circe-parser" % circeVersion,
+      "io.circe" %% "circe-refined" % circeVersion,
 
       "dev.zio" %% "zio" % zioVersion,
       "dev.zio" %% "zio-interop-cats" % "1.3.1.0-RC3",

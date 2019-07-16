@@ -1,21 +1,28 @@
 package example
 
-import zio.App
-import zio.console._
+import eu.timepit.refined.types.string.NonEmptyString
+import io.circe.generic.JsonCodec
+import io.circe.parser._
+import io.circe
+import io.circe.CursorOp.DownField
+import io.circe.{DecodingFailure, Json}
+import eu.timepit.refined.auto._
+import io.circe.refined._
 
-object Hello extends Greeting with App {
-  val program =
-    for {
-      _ <- putStrLn("Hello! What is your name?")
-      n <- getStrLn
-      _ <- putStrLn(greeting + ", " + n)
-    } yield ()
+object Hello extends App {
 
-  val app = program.fold(_ => 1, _ => 0)
+  @JsonCodec case class Request(application_uuid: NonEmptyString, some_data: SomeData)
 
-  def run(args: List[String]) = app
-}
+  @JsonCodec case class SomeData(somex: Json)
 
-trait Greeting {
-  def greeting: String = "Hello"
+  val value: Either[circe.Error, Request] = decode[Request]("""{"application_uuid": "1", "some_data": {}}""".stripMargin)
+
+  value match {
+    case e @ Left(DecodingFailure("Predicate isEmpty() did not fail.", DownField("application_uuid") :: Nil)) =>
+      println(e)
+    case e @ Left(DecodingFailure("Attempt to decode value on failed cursor", DownField("somex") :: DownField("some_data") :: Nil)) =>
+      println(e)
+    case _ =>
+//      println(value)
+  }
 }
